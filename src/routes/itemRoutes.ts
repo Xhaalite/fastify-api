@@ -1,12 +1,5 @@
-import Fastify, {
-  FastifyInstance,
-  FastifyReply,
-  FastifyRequest,
-} from 'fastify';
-import items from '../items';
+import { FastifyInstance } from 'fastify';
 import { getItems, getItem } from '../controllers/items';
-
-const fastify: FastifyInstance = Fastify({ logger: true });
 
 // Options for get all items
 const getItemsOpts = {
@@ -44,12 +37,13 @@ const getItemByIdOpts = {
 };
 
 // Routes for items
-export default function itemRoutes(fastify: FastifyInstance, done: () => void) {
+export default async function itemRoutes(
+  fastify: FastifyInstance,
+): Promise<void> {
   // get all items
   fastify.get('/items', getItemsOpts);
 
   // get item by ID
   fastify.get<{ Params: { id: string } }>('/items/:id', getItemByIdOpts);
 
-  done();
 }
