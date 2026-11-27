@@ -4,6 +4,7 @@ import Fastify, {
   FastifyRequest,
 } from 'fastify';
 import items from '../items';
+import { getItems, getItem } from '../controllers/items';
 
 const fastify: FastifyInstance = Fastify({ logger: true });
 
@@ -23,9 +24,7 @@ const getItemsOpts = {
       },
     },
   },
-  handler: async function (request: FastifyRequest, reply: FastifyReply) {
-    reply.send(items);
-  },
+  handler: getItems,
 };
 
 // Options for get item by ID
@@ -41,18 +40,7 @@ const getItemByIdOpts = {
       },
     },
   },
-  handler: async function (
-    request: FastifyRequest<{ Params: { id: string } }>,
-    reply: FastifyReply,
-  ) {
-    const { id } = request.params;
-    const item = items.find((item) => item.id === Number(id));
-    if (!item) {
-      reply.code(404).send({ message: 'Item not found' });
-      return;
-    }
-    reply.send(item);
-  },
+  handler: getItem,
 };
 
 // Routes for items
