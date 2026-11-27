@@ -41,3 +41,18 @@ export async function deleteItem(
   const deletedItem = items.splice(index, 1);
   reply.send(deletedItem[0]);
 }
+
+export function updateItem(
+  request: FastifyRequest<{ Params: { id: string }; Body: { name: string } }>,
+  reply: FastifyReply,
+) {
+  const { id } = request.params;
+  const { name } = request.body;
+  const item = items.find((item) => item.id === id);
+  if (!item) {
+    reply.code(404).send({ message: 'Item not found' });
+    return;
+  }
+  item.name = name;
+  reply.send(item);
+}

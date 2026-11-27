@@ -4,6 +4,7 @@ import {
   getItem,
   addItem,
   deleteItem,
+  updateItem,
 } from '../controllers/items.js';
 import items from '../items.js';
 
@@ -73,7 +74,21 @@ const deleteItemOpts = {
   },
   handler: deleteItem,
 };
-
+// Options for update item
+const updateItemOpts = {
+  schema: {
+    response: {
+      200: {
+        type: 'object',
+        properties: {
+          id: { type: 'string' },
+          name: { type: 'string' },
+        },
+      },
+    },
+  },
+  handler: updateItem,
+};
 // Routes for items
 export default async function itemRoutes(
   fastify: FastifyInstance,
@@ -89,4 +104,10 @@ export default async function itemRoutes(
 
   // delete item by ID
   fastify.delete<{ Params: { id: string } }>('/items/:id', deleteItemOpts);
+
+  // update item by ID
+  fastify.put<{ Params: { id: string }; Body: { name: string } }>(
+    '/items/:id',
+    updateItemOpts,
+  );
 }
