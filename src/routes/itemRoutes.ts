@@ -1,5 +1,11 @@
 import { FastifyInstance } from 'fastify';
-import { getItems, getItem } from '../controllers/items';
+import {
+  getItems,
+  getItem,
+  addItem,
+  deleteItem,
+} from '../controllers/items.js';
+import items from '../items.js';
 
 // Options for get all items
 const getItemsOpts = {
@@ -36,6 +42,38 @@ const getItemByIdOpts = {
   handler: getItem,
 };
 
+// Options for add item
+const postItemOpts = {
+  schema: {
+    response: {
+      201: {
+        type: 'object',
+        properties: {
+          id: { type: 'string' },
+          name: { type: 'string' },
+        },
+      },
+    },
+  },
+  handler: addItem,
+};
+
+// Options for delete item
+const deleteItemOpts = {
+  schema: {
+    response: {
+      200: {
+        type: 'object',
+        properties: {
+          id: { type: 'string' },
+          name: { type: 'string' },
+        },
+      },
+    },
+  },
+  handler: deleteItem,
+};
+
 // Routes for items
 export default async function itemRoutes(
   fastify: FastifyInstance,
@@ -46,4 +84,9 @@ export default async function itemRoutes(
   // get item by ID
   fastify.get<{ Params: { id: string } }>('/items/:id', getItemByIdOpts);
 
+  // Add item
+  fastify.post('/items', postItemOpts);
+
+  // delete item by ID
+  fastify.delete<{ Params: { id: string } }>('/items/:id', deleteItemOpts);
 }

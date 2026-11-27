@@ -2,7 +2,7 @@ import 'dotenv/config';
 import Fastify, { FastifyInstance, FastifyListenOptions } from 'fastify';
 import swagger from '@fastify/swagger';
 import swaggerUi from '@fastify/swagger-ui';
-import itemRoutes from './routes/itemRoutes';
+import itemRoutes from './routes/itemRoutes.js';
 
 const fastify: FastifyInstance = Fastify({ logger: true });
 
